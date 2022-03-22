@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 #postgres://avixkyyrvhcrjp:91fcf33b22cf6a4cd6dd1c06c1aa49bae8bcfd8815c34cc52d941339a0498af5@ec2-3-211-149-196.compute-1.amazonaws.com:5432/df99c95p1tsk7c
 # Password validation
@@ -138,4 +138,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # # # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'myportfolio/static'),
+    os.path.join(BASE_DIR, 'media'),
 )

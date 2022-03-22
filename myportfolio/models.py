@@ -1,21 +1,20 @@
 from django.db import models
-import os
-# Create your models here.
-from django.conf import settings
-from datetime import date,datetime
-import re
+from datetime import date, datetime
+
+
+
+
 
 class Project(models.Model):
-
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=2000)
-    github_link = models.CharField(max_length=2000)
-    tech_stack = models.CharField(max_length=500)
-    image = models.FilePathField(path=os.path.join(settings.BASE_DIR, "myportfolio/static/img"), default="")
+    tag1 = models.CharField(max_length=25, blank=True, null=True)
+    tag2 = models.CharField(max_length=25, blank=True, null=True)
+    tag3 = models.CharField(max_length=25, blank=True, null=True)
+    link = models.CharField(max_length=2000, blank=True, null=True,)
+    image = models.ImageField(upload_to="img", blank=True, null=True,)
 
-    @property
-    def image_path(self):
-        return re.sub('.*img/','',self.image)
+    # @property
 
     def __str__(self):
         return self.title
@@ -23,7 +22,7 @@ class Project(models.Model):
 
 class Blog(models.Model):
     title = models.CharField(max_length=500)
-    link = models.CharField(max_length=2000)
+    link = models.CharField(max_length=300)
     published_on = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
@@ -35,25 +34,20 @@ class Experience(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(blank=True)
     is_present = models.BooleanField(null=True,blank=True)
-    responsibilities_1 = models.CharField(max_length=2000,default=None,blank=True)
-    responsibilities_2 = models.CharField(max_length=2000,default=None,blank=True)
-    responsibilities_3 = models.CharField(max_length=2000,default=None,blank=True)
-    responsibilities_4 = models.CharField(max_length=2000,default=None,blank=True)
+    responsibilities_1 = models.CharField(max_length=500,default=None,blank=True)
+    responsibilities_2 = models.CharField(max_length=500,default=None,blank=True)
+    responsibilities_3 = models.CharField(max_length=500,default=None,blank=True)
+    responsibilities_4 = models.CharField(max_length=500,default=None,blank=True)
     company = models.CharField(max_length=200,default=None,blank=True)
     location = models.CharField(max_length=200,default=None,blank=True)
-
 
     def __str__(self):
         return self.designation
 
 
 class Skill(models.Model):
-
     name = models.CharField(max_length=50)
-    image =models.CharField(max_length=1000)
-
-    def __str__(self):
-        return self.name
+    image = models.CharField(max_length=1000)
 
 
 class Connection(models.Model):
@@ -69,14 +63,15 @@ class Connection(models.Model):
 class Profile(models.Model):
     name = models.CharField(max_length=100)
     designation = models.CharField(max_length=500)
-    summary = models.CharField(max_length=5000)
-    image = models.FilePathField(path=os.path.join(settings.BASE_DIR, "myportfolio/static/img"), default="")
+    summary = models.CharField(max_length=2000)
+    image = models.ImageField(upload_to="img", blank=True, null=True,)
+    cv = models.FileField(upload_to="cv", blank=True, null=True,)
     phone_number = models.CharField(max_length=100)
     email = models.EmailField()
-    fb_link = models.URLField()
-    github_link = models.URLField()
-    insta_link = models.URLField()
-    linkedin_link = models.URLField()
+    medium_link = models.URLField(default=None,blank=True)
+    github_link = models.URLField(default=None,blank=True)
+    insta_link = models.URLField(default=None,blank=True)
+    linkedin_link = models.URLField(default=None,blank=True)
 
 
     def __str__(self):

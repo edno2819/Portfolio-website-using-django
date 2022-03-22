@@ -1,11 +1,10 @@
-from django.shortcuts import render
-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader, Context
-from .models import Project, Blog, Skill, Connection,Experience,Profile
-# Create your views here.
+from .models import Project, Blog, Skill, Connection, Experience, Profile
 from .forms import NameForm
-from django.core.mail import send_mail
+from django.shortcuts import render
+
+
 
 
 def index(request):
@@ -19,40 +18,15 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def experiences(request):
-    return HttpResponse("you are in experience page")
+def page_cv(request):
+    experiences = Experience.objects.all().order_by('-start_date')[:5]
+    context = {'experiences':experiences}
+    return render(request, 'myportfolio/cv.html', context)
 
-
-def blogs(request):
-    template = loader.get_template("myportfolio/blog.html")
+def blog(request):
     blogs = Blog.objects.all().order_by('-published_on')
     context = {'blogs': blogs}
-    return HttpResponse(template.render(context, request))
-
-
-def contact(request):
-    if request.method == 'POST':
-        template = loader.get_template("myportfolio/contact.html")
-        # create a form instance and populate it with data from the request:
-        form = NameForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            ob = Connection()
-            ob.your_name = form.cleaned_data['your_name']
-            ob.email = form.cleaned_data['email']
-            ob.subject = form.cleaned_data['subject']
-            ob.message = form.cleaned_data['message']
-            ob.save()
-            context={}
-            return HttpResponse(template.render(context, request))
-            # return HttpResponseRedirect('/thanks/')
-
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = NameForm()
-
-    return HttpResponseRedirect('/myportfolio')
-
+    return render(request, 'myportfolio/blog.html', context)
 
 def projects(request):
     return HttpResponse("you are in projects pages")
